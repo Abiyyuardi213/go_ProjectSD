@@ -23,7 +23,7 @@ func MainProgram() {
 		switch pilih {
 		case 1:
 			view.VLoginAdmin()
-			
+
 			for {
 				view.MenuAdmin()
 				fmt.Print("Input your choice: ")
@@ -32,9 +32,11 @@ func MainProgram() {
 				switch pilihMenu {
 				case 1:
 					fmt.Println("your choice is input data")
+					view.VAddBarang()
 
 				case 2:
 					fmt.Println("your choice is update data")
+					view.VUpdateBarang()
 
 				case 3:
 					fmt.Println("your choice is delete data")
@@ -43,6 +45,7 @@ func MainProgram() {
 					fmt.Println("your choice is search data")
 
 				case 5:
+					view.VReadAllData()
 					fmt.Println("your choice is list data")
 
 				case 6:
