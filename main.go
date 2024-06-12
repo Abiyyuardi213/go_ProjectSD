@@ -31,24 +31,27 @@ func MainProgram() {
 
 				switch pilihMenu {
 				case 1:
-					fmt.Println("your choice is input data")
 					view.VAddBarang()
 
 				case 2:
-					fmt.Println("your choice is update data")
 					view.VUpdateBarang()
 
 				case 3:
-					fmt.Println("your choice is delete data")
+					view.VDeleteBarang()
 
 				case 4:
-					fmt.Println("your choice is search data")
+					view.VSearchBarang()
 
 				case 5:
 					view.VReadAllData()
-					fmt.Println("your choice is list data")
 
 				case 6:
+					view.VTransaksiKeluar()
+
+				case 7:
+					view.VHistoryTransaksi()
+
+				case 8:
 					return
 				}
 			}

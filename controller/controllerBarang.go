@@ -25,6 +25,14 @@ func CReadAllData() ([]node.DataBarang, error) {
 	return allData, nil
 }
 
+func CSearchData(serialNumber int) (node.DataBarang, error) {
+	data, err := model.MSearchData(serialNumber)
+	if err != nil {
+		return node.DataBarang{}, fmt.Errorf("failed to search data: %v", err)
+	}
+	return data, nil
+}
+
 func CUpdateData(serialNumber int, updatedData node.DataBarang) (node.DataBarang, error) {
 	updatedData.SerialNumber = serialNumber
 	updatedData, err := model.MUpdateData(serialNumber, updatedData)
@@ -32,4 +40,13 @@ func CUpdateData(serialNumber int, updatedData node.DataBarang) (node.DataBarang
 		return node.DataBarang{}, fmt.Errorf("failed to update data: %v", err)
 	}
 	return updatedData, nil
+}
+
+func CDeleteData(serialNumber int) (node.DataBarang, error) {
+	deletedData, err := model.MDeleteData(serialNumber)
+	if err != nil {
+		return node.DataBarang{}, fmt.Errorf("failed to delete data : %v", err)
+	}
+
+	return deletedData, nil
 }

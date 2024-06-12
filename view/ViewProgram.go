@@ -20,7 +20,7 @@ func MenuAdmin() {
 	fmt.Println("4. Search Data")
 	fmt.Println("5. Data List")
 	fmt.Println("6. Transaction of Outgoing Goods")
-	fmt.Println("7. Transaction of Ingoing Goods")
+	fmt.Println("7. History of Transaction")
 	fmt.Println("8. Back to Home Page")
 	fmt.Println("--------------------------------")
 }

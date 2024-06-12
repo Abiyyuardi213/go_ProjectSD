@@ -62,6 +62,19 @@ func MReadAllData() []node.DataBarang {
 	return allData
 }
 
+func MSearchData(serialNumber int) (node.DataBarang, error) {
+	current := database.DatabaseBarang.Next
+
+	for current != nil {
+		if current.DBBarang.SerialNumber == serialNumber {
+			return current.DBBarang, nil
+		}
+		current = current.Next
+	}
+
+	return node.DataBarang{}, fmt.Errorf("data dengan serial number %d tidak ditemukan", serialNumber)
+}
+
 func MUpdateData(serialNumber int, updatedData node.DataBarang) (node.DataBarang, error) {
 	current := database.DatabaseBarang.Next
 

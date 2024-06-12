@@ -56,6 +56,7 @@ func MLoginAdmin(username, password string) (node.DataAdmin, error) {
 	current := database.DatabaseAdmin.Next
 	for current != nil {
 		if current.DBAdmin.Username == username && current.DBAdmin.Password == password {
+			database.LoggedInAdmin = current.DBAdmin
 			SaveLoginHistory(current.DBAdmin.Id, current.DBAdmin.Username)
 			return current.DBAdmin, nil
 		}
