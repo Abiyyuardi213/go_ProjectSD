@@ -45,20 +45,20 @@ func VRegisterAdmin() {
 	controller.CRegisterAdmin(data)
 }
 
-func VLoginAdmin() {
-	reader := bufio.NewReader(os.Stdin)
+func VLoginAdmin() (int, string) {
+	var username, password string
+	fmt.Print("Username : ")
+	fmt.Scan(&username)
+	fmt.Print("Password : ")
+	fmt.Scan(&password)
 
-	fmt.Println("Login Admin")
-
-	fmt.Print("Input Username: ")
-	username, _ := reader.ReadString('\n')
-	username = strings.TrimSpace(username)
-
-	fmt.Print("Input Password: ")
-	password, _ := reader.ReadString('\n')
-	password = strings.TrimSpace(password)
-
-	controller.CLoginAdmin(username, password)
+	adminID, err := controller.CLoginAdmin(username, password)
+	if err != nil {
+		fmt.Println("Login gagal:", err)
+		return 0, ""
+	}
+	fmt.Println("Login Berhasil")
+	return adminID, username
 }
 
 func VDaftarAdmin() {

@@ -10,6 +10,9 @@ import (
 func MainProgram() {
 	var pilih int
 	var pilihMenu int
+	var loggedInAdminID int
+	var loggedInAdminUsername string
+
 	reader := bufio.NewReader(os.Stdin) // Ini untuk membersihkan buffer setelah fmt.Scan
 
 	for {
@@ -22,12 +25,15 @@ func MainProgram() {
 
 		switch pilih {
 		case 1:
-			view.VLoginAdmin()
+			loggedInAdminID, loggedInAdminUsername = view.VLoginAdmin()
 
+			adminLoop:
 			for {
 				view.MenuAdmin()
 				fmt.Print("Input your choice: ")
 				fmt.Scan(&pilihMenu)
+
+				reader.ReadString('\n')
 
 				switch pilihMenu {
 				case 1:
@@ -46,13 +52,18 @@ func MainProgram() {
 					view.VReadAllData()
 
 				case 6:
-					view.VTransaksiKeluar()
+					if loggedInAdminID != 0 && loggedInAdminUsername != "" {
+						view.VCreateTransaksi(loggedInAdminID, loggedInAdminUsername)
+					} else {
+						fmt.Println("Admin belum login.")
+					}
 
 				case 7:
 					view.VHistoryTransaksi()
 
 				case 8:
-					return
+					fmt.Println("Returning to main menu...")
+					break adminLoop
 				}
 			}
 

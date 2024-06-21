@@ -1,59 +1,85 @@
 package model
 
 import (
-	"fmt"
+	"errors"
 	"go_ProjectSD/database"
 	"go_ProjectSD/node"
-	"strconv"
+	"math/rand"
 	"time"
 )
 
-func MTransaksiKeluar(barangName string, quantity int) (node.DataBarang, error) {
-	current := database.DatabaseBarang.Next
-	var updatedBarang node.DataBarang
-
+func MCheckTransactionIDExist(transactionID int) bool {
+	current := database.DatabaseTransaksi.Next
 	for current != nil {
-		if current.DBBarang.Name == barangName {
-			stock, _ := strconv.Atoi(current.DBBarang.Stock)
-			if stock < quantity {
-				return node.DataBarang{}, fmt.Errorf("stok barang tidak mencukupi")
-			}
-			stock -= quantity
-			current.DBBarang.Stock = strconv.Itoa(stock)
-			updatedBarang = current.DBBarang
-
-			newTransaksi := &node.TransaksiKeluar{
-				AdminID: database.LoggedInAdmin.Id,
-				Username: database.LoggedInAdmin.Username,
-				NamaBarang: barangName,
-				Quantity: quantity,
-				Time: time.Now(),
-				Next: nil,
-			}
-
-			if database.DatabaseTransaksiOut.Next == nil {
-				database.DatabaseTransaksiOut.Next = newTransaksi
-			} else {
-				transaksiCurrent := database.DatabaseTransaksiOut.Next
-				for transaksiCurrent.Next != nil {
-					transaksiCurrent = transaksiCurrent.Next
-				}
-				transaksiCurrent.Next = newTransaksi
-			}
-			return updatedBarang, nil
+		if current.ID == transactionID {
+			return true
 		}
 		current = current.Next
 	}
-
-	return node.DataBarang{}, fmt.Errorf("barang dengan nama %s tidak ditemukan", barangName)
+	return false
 }
 
-func MGetHistoryTransaksi() []node.TransaksiKeluar {
-	var history []node.TransaksiKeluar
-	current := database.DatabaseTransaksiOut.Next
+func MCreateTransaction(adminID int, username string, barangs []node.BarangTransaksi) error {
+	rand.Seed(time.Now().UnixNano())
+	var transactionID int
+	exist := true
+
+	for exist {
+		transactionID = rand.Intn(9000) + 1000
+		exist = MCheckTransactionIDExist(transactionID)
+	}
+
+	transactionTime := time.Now()
+	newTransaction := &node.Transaksi{
+		ID: transactionID,
+		AdminID: adminID,
+		Username: username,
+		Barang: barangs,
+		TransaksiTime: transactionTime,
+		Next: nil,
+	}
+
+	if database.DatabaseTransaksi.Next == nil {
+		database.DatabaseTransaksi.Next = newTransaction
+	} else {
+		current := database.DatabaseTransaksi
+		for current.Next != nil {
+			current = *current.Next
+		}
+		current.Next = newTransaction
+	}
+
+	for _, barangTransaksi := range barangs {
+		err := MUpdatedBarangQuantity(barangTransaksi.SerialNumber, barangTransaksi.Quantity)
+		if err != nil {
+			return nil
+		}
+	}
+	return nil
+}
+
+func MUpdatedBarangQuantity(serialNumber int, barangQuantity int) error {
+	current := database.DatabaseBarang.Next
 	for current != nil {
-		history = append(history, *current)
+		if current.DBBarang.SerialNumber == serialNumber {
+			if current.DBBarang.Stock >= barangQuantity {
+				current.DBBarang.Stock -= barangQuantity
+				return nil
+			} else {
+				return errors.New("stok tidak mencukupi untuk transaksi ini")
+			}
+		}
 		current = current.Next
 	}
-	return history
+	return errors.New("barang tidak ditemukan")
+}
+
+func MGetTransactionHistory() []node.Transaksi {
+	var transactions []node.Transaksi
+	current := database.DatabaseTransaksi.Next
+	for current != nil {
+		transactions = append(transactions, *current)
+		current = current.Next
+	}
+	return transactions
 }

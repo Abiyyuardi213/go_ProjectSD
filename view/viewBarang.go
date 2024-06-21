@@ -7,20 +7,21 @@ import (
 )
 
 func VAddBarang() {
-	var name, stock, price string
+	var name, price string
+	var stock int
 
 	fmt.Println("----- INPUT DATA BARU -----")
 	fmt.Print("-- Nama Barang : ")
 	fmt.Scan(&name)
-	fmt.Print("-- Jumlah Stok : ")
-	fmt.Scan(&stock)
 	fmt.Print("-- Harga Barang   : ")
 	fmt.Scan(&price)
+	fmt.Print("-- Jumlah Stok : ")
+	fmt.Scan(&stock)
 
 	newData := node.DataBarang{
 		Name: name,
-		Stock: stock,
 		Price: price,
+		Stock: stock,
 	}
 
 	addedData, err := controller.CAddData(newData)
@@ -32,8 +33,8 @@ func VAddBarang() {
 	fmt.Println("Data berhasil ditambahkan.")
 	fmt.Printf("-- Serial Number : %d\n", addedData.SerialNumber)
 	fmt.Printf("-- Nama Barang   : %s\n", addedData.Name)
-	fmt.Printf("-- Jumlah Barang : %s\n", addedData.Stock)
 	fmt.Printf("-- Harga Barang  : %s\n", addedData.Price)
+	fmt.Printf("-- Jumlah Barang : %d\n", addedData.Stock)
 	fmt.Println("-------------------------------------------")
 }
 
@@ -48,8 +49,8 @@ func VReadAllData() {
 	for _, data := range allData {
 		fmt.Printf("Serial Number : %d\n", data.SerialNumber)
 		fmt.Printf("Nama Barang   : %s\n", data.Name)
-		fmt.Printf("Jumlah Stok   : %s\n", data.Stock)
 		fmt.Printf("Harga Barang  : %s\n", data.Price)
+		fmt.Printf("Jumlah Stok   : %d\n", data.Stock)
 		fmt.Println("-------------------------------------")
 	}
 }
@@ -70,14 +71,14 @@ func VSearchBarang() {
 	fmt.Println("Data barang ditemukan : ")
 	fmt.Printf("-- Serial Number : %d\n", data.SerialNumber)
 	fmt.Printf("-- Nama Barang   : %s\n", data.Name)
-	fmt.Printf("-- Jumlah Barang : %s\n", data.Stock)
 	fmt.Printf("-- Harga Barang  : %s\n", data.Price)
+	fmt.Printf("-- Jumlah Barang : %d\n", data.Stock)
 	fmt.Println("-------------------------------------")
 }
 
 func VUpdateBarang() {
-	var serialNumber int
-	var name, stock, price, confirm string
+	var serialNumber, stock int
+	var name, price, confirm string
 
 	fmt.Println("----- UPDATE DATA BARANG -----")
 	fmt.Print("-- Serial Number : ")
@@ -92,8 +93,8 @@ func VUpdateBarang() {
 	fmt.Println("Data barang yang akan diupdate: ")
 	fmt.Printf("-- Serial Number : %d\n", data.SerialNumber)
 	fmt.Printf("-- Nama Barang   : %s\n", data.Name)
-	fmt.Printf("-- Jumlah Stok   : %s\n", data.Stock)
 	fmt.Printf("-- Harga Barang  : %s\n", data.Price)
+	fmt.Printf("-- Jumlah Stok   : %d\n", data.Stock)
 	fmt.Println("----------------------------------------")
 	fmt.Print("Apakah anda yakin akan mengupdate data diatas? (y/n): ")
 	fmt.Scan(&confirm)
@@ -101,16 +102,16 @@ func VUpdateBarang() {
 	if confirm == "y" || confirm == "Y" {
 		fmt.Print("-- Nama Barang  : ")
 		fmt.Scan(&name)
-		fmt.Print("-- Jumlah Stok  : ")
-		fmt.Scan(&stock)
 		fmt.Print("-- Harga Barang : ")
 		fmt.Scan(&price)
+		fmt.Print("-- Jumlah Stok  : ")
+		fmt.Scan(&stock)
 
 		updatedData := node.DataBarang{
 			SerialNumber: serialNumber,
 			Name: name,
-			Stock: stock,
 			Price: price,
+			Stock: stock,
 		}
 
 		_, err := controller.CUpdateData(serialNumber, updatedData)
@@ -122,8 +123,8 @@ func VUpdateBarang() {
 		fmt.Println("Data berhasil diupdate.")
 		fmt.Printf("-- Serial Number : %d\n", updatedData.SerialNumber)
 		fmt.Printf("-- Nama Barang   : %s\n", updatedData.Name)
-		fmt.Printf("-- Jumlah Stok   : %s\n", updatedData.Stock)
 		fmt.Printf("-- Harga Barang  : %s\n", updatedData.Price)
+		fmt.Printf("-- Jumlah Stok   : %d\n", updatedData.Stock)
 		fmt.Println("-------------------------------------------")
 	} else {
 		fmt.Println("Update data dibatalkan")
@@ -147,8 +148,8 @@ func VDeleteBarang() {
 	fmt.Println("Data barang yang akan di hapus : ")
 	fmt.Printf("-- Serial Number : %d\n", data.SerialNumber)
 	fmt.Printf("-- Nama Barang   : %s\n", data.Name)
-	fmt.Printf("-- Jumlah Stok   : %s\n", data.Stock)
 	fmt.Printf("-- Harga Barang  : %s\n", data.Price)
+	fmt.Printf("-- Jumlah Stok   : %d\n", data.Stock)
 	fmt.Println("-------------------------------------")
 	fmt.Print("Apakah anda yakin akan menghapus data diatas? (y/n): ")
 	fmt.Scan(&confirmation)
@@ -162,8 +163,8 @@ func VDeleteBarang() {
 		fmt.Println("Data berhasil di hapus.")
 		fmt.Printf("-- Serial Number : %d\n", deletedData.SerialNumber)
 		fmt.Printf("-- Nama Barang   : %s\n", deletedData.Name)
-		fmt.Printf("-- Jumlah Stok   : %s\n", deletedData.Stock)
 		fmt.Printf("-- Harga Barang  : %s\n", deletedData.Price)
+		fmt.Printf("-- Jumlah Stok   : %d\n", deletedData.Stock)
 	} else {
 		fmt.Println("Penghapusan data dibatalkan.")
 	}

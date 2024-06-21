@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
+	"go_ProjectSD/database"
 	"go_ProjectSD/model"
 	"go_ProjectSD/node"
 )
@@ -16,14 +18,15 @@ func CRegisterAdmin(data node.DataAdmin) {
 	fmt.Println("Admin ID : ", registeredData.Id)
 }
 
-func CLoginAdmin(username, password string) {
-	adminData, err := model.MLoginAdmin(username, password)
-	if err != nil {
-		fmt.Println("Login Failed : ", err.Error())
-		return
+func CLoginAdmin(username, password string) (int, error) {
+	current := database.DatabaseAdmin.Next
+	for current != nil {
+		if current.DBAdmin.Username == username && current.DBAdmin.Password == password {
+			return current.DBAdmin.Id, nil
+		}
+		current = current.Next
 	}
-	fmt.Println("Login successfull!")
-	fmt.Println("Welcome,", adminData.Name)
+	return 0, errors.New("username atau password salah")
 }
 
 func CDaftarAdmin() []node.DataAdmin {

@@ -1,19 +1,14 @@
 package controller
 
 import (
-	"fmt"
 	"go_ProjectSD/model"
 	"go_ProjectSD/node"
 )
 
-func CTransaksiKeluar(barangName string, quantity int) (node.DataBarang, error) {
-	updatedData, err := model.MTransaksiKeluar(barangName, quantity)
-	if err != nil {
-		return node.DataBarang{}, fmt.Errorf("failed to process transaction: %v", err)
-	}
-	return updatedData, nil
+func CCreateTransaksi(adminID int, username string, barangs []node.BarangTransaksi) error {
+	return model.MCreateTransaction(adminID, username, barangs)
 }
 
-func CHistoryTransaksi() []node.TransaksiKeluar {
-	return model.MGetHistoryTransaksi()
+func CGetTransactionHistory() []node.Transaksi {
+	return model.MGetTransactionHistory()
 }

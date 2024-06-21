@@ -3,8 +3,8 @@ package node
 type DataBarang struct {
 	SerialNumber int
 	Name string
-	Stock string
 	Price string
+	Stock int
 }
 
 type BarangLL struct {

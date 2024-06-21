@@ -81,8 +81,8 @@ func MUpdateData(serialNumber int, updatedData node.DataBarang) (node.DataBarang
 	for current != nil {
 		if current.DBBarang.SerialNumber == serialNumber {
 			current.DBBarang.Name = updatedData.Name
-			current.DBBarang.Stock = updatedData.Stock
 			current.DBBarang.Price = updatedData.Price
+			current.DBBarang.Stock = updatedData.Stock
 			return current.DBBarang, nil
 		}
 		current = current.Next

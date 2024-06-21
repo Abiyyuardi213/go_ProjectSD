@@ -2,11 +2,16 @@ package node
 
 import "time"
 
-type TransaksiKeluar struct {
-	AdminID    int
-	Username   string
-	NamaBarang string
-	Quantity   int
-	Time       time.Time
-	Next *TransaksiKeluar
+type BarangTransaksi struct {
+	SerialNumber int
+	Quantity     int
+}
+
+type Transaksi struct {
+	ID            int
+	AdminID int
+	Username string
+	Barang        []BarangTransaksi
+	TransaksiTime time.Time
+	Next *Transaksi
 }
